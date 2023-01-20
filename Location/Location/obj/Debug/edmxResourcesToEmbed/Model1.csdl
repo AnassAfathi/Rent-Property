@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="locamaisonModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Admin">
+    <Key>
+      <PropertyRef Name="Email_a" />
+    </Key>
+    <Property Name="Email_a" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Nom_a" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Tel_a" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Categorie">
+    <Key>
+      <PropertyRef Name="ID_categ" />
+    </Key>
+    <Property Name="ID_categ" Type="Int32" Nullable="false" />
+    <Property Name="nom_categ" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Imobiliers" Relationship="Self.FK_Imobilier_Categorie" FromRole="Categorie" ToRole="Imobilier" />
+  </EntityType>
+  <EntityType Name="Imobilier">
+    <Key>
+      <PropertyRef Name="Titre_im" />
+    </Key>
+    <Property Name="Titre_im" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Categ_im" Type="Int32" />
+    <Property Name="Ville_im" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Adresse_im" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Locatairee" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Etat" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Prix" Type="Double" />
+    <Property Name="Date_Cre" Type="DateTime" Precision="0" />
+    <Property Name="Date_edit" Type="DateTime" Precision="0" />
+    <Property Name="Date_Class" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="Categorie" Relationship="Self.FK_Imobilier_Categorie" FromRole="Imobilier" ToRole="Categorie" />
+    <NavigationProperty Name="Photos" Relationship="Self.FK_Photo_Imobilier" FromRole="Imobilier" ToRole="Photo" />
+  </EntityType>
+  <EntityType Name="Locatairre">
+    <Key>
+      <PropertyRef Name="Email_l" />
+    </Key>
+    <Property Name="Email_l" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Nom_l" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Tel_l" Type="Int32" />
+    <Property Name="Etat_l" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="User" Relationship="Self.FK_Locatairre_Users" FromRole="Locatairre" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="Photo">
+    <Key>
+      <PropertyRef Name="ID_im" />
+    </Key>
+    <Property Name="ID_im" Type="Int32" Nullable="false" />
+    <Property Name="Titre_im" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Photos" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <NavigationProperty Name="Imobilier" Relationship="Self.FK_Photo_Imobilier" FromRole="Photo" ToRole="Imobilier" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="Email" />
+    </Key>
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Etat" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Locatairre" Relationship="Self.FK_Locatairre_Users" FromRole="Users" ToRole="Locatairre" />
+  </EntityType>
+  <Association Name="FK_Imobilier_Categorie">
+    <End Role="Categorie" Type="Self.Categorie" Multiplicity="0..1" />
+    <End Role="Imobilier" Type="Self.Imobilier" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categorie">
+        <PropertyRef Name="ID_categ" />
+      </Principal>
+      <Dependent Role="Imobilier">
+        <PropertyRef Name="Categ_im" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Photo_Imobilier">
+    <End Role="Imobilier" Type="Self.Imobilier" Multiplicity="0..1" />
+    <End Role="Photo" Type="Self.Photo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Imobilier">
+        <PropertyRef Name="Titre_im" />
+      </Principal>
+      <Dependent Role="Photo">
+        <PropertyRef Name="Titre_im" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Locatairre_Users">
+    <End Role="Users" Type="Self.User" Multiplicity="1" />
+    <End Role="Locatairre" Type="Self.Locatairre" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Email" />
+      </Principal>
+      <Dependent Role="Locatairre">
+        <PropertyRef Name="Email_l" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="locamaisonEntities1" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Admins" EntityType="Self.Admin" />
+    <EntitySet Name="Categories" EntityType="Self.Categorie" />
+    <EntitySet Name="Imobiliers" EntityType="Self.Imobilier" />
+    <EntitySet Name="Locatairres" EntityType="Self.Locatairre" />
+    <EntitySet Name="Photos" EntityType="Self.Photo" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="Users" EntityType="Self.User" />
+    <AssociationSet Name="FK_Imobilier_Categorie" Association="Self.FK_Imobilier_Categorie">
+      <End Role="Categorie" EntitySet="Categories" />
+      <End Role="Imobilier" EntitySet="Imobiliers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Photo_Imobilier" Association="Self.FK_Photo_Imobilier">
+      <End Role="Imobilier" EntitySet="Imobiliers" />
+      <End Role="Photo" EntitySet="Photos" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Locatairre_Users" Association="Self.FK_Locatairre_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Locatairre" EntitySet="Locatairres" />
+    </AssociationSet>
+    <FunctionImport Name="sp_alterdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_creatediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_dropdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(locamaisonModel.sp_helpdiagramdefinition_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(locamaisonModel.sp_helpdiagrams_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_renamediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="new_diagramname" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_upgraddiagrams" />
+  </EntityContainer>
+  <ComplexType Name="sp_helpdiagramdefinition_Result">
+    <Property Type="Int32" Name="version" Nullable="true" />
+    <Property Type="Binary" Name="definition" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagrams_Result">
+    <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+    <Property Type="Int32" Name="OwnerID" Nullable="false" />
+  </ComplexType>
+</Schema>

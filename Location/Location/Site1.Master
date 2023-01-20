@@ -1,0 +1,75 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site1.master.cs" Inherits="Location.Site1" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <style type="text/css">
+        .auto-style1 {
+            height: 50px;
+            width: 1400px;
+        }
+        .auto-style2 {
+            height: 30px;
+        }
+        .auto-style4 {
+            height: 38px;
+            width: 86px;
+        }
+        .auto-style5 {
+            height: 38px;
+            width: 1400px;
+        }
+    </style>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <table style="font-family:Arial">
+    <tr>
+        <td style="background-color:#F1F1F1; 
+            text-align:center" class="auto-style4">
+
+                
+            <asp:ImageButton ID="ImageButton1" runat="server" Height="35px" ImageUrl="~/Logo.png" OnClick="ImageButton1_Click" Width="77px" />
+
+                
+        </td>
+        <td  style="background-color:blue;color:floralwhite; 
+            text-align:center" class="auto-style5">
+            <h1>
+                Appartement.Net
+            </h1>
+        </td>
+    </tr>
+    <tr>
+        <td style="background-color:white;text-align:center;border-right:solid 1px blue" class="auto-style4">
+
+            <asp:Menu ID="Menu1" runat="server" StaticSubMenuIndent="16px">
+                <Items>
+                    <asp:MenuItem NavigateUrl="~/WebForm2.aspx" Text="Deposer une annonce" Value="Deposer une annonce"></asp:MenuItem>
+                    <asp:MenuItem NavigateUrl="~/WebForm2.aspx" Text="Se connecter" Value="Se connecter"></asp:MenuItem>
+                </Items>
+            </asp:Menu>
+
+        </td>
+        <td  style="background-color:white; " class="auto-style5">
+             
+        <div>
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+             </td>
+    </tr>
+    <tr>
+        <td colspan="2" style="background-color:blue; text-align:center;color:whitesmoke" class="auto-style2">
+            <b>realiser par SAAD ANISSI EDDAIBOUNI et ANASS AFATHI</b>
+        </td>
+    </tr>
+</table>
+    </form>
+</body>
+</html>

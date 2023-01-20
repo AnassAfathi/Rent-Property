@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Projet_De_ClasseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Admin">
+    <Key>
+      <PropertyRef Name="Email_a" />
+    </Key>
+    <Property Name="Email_a" Type="nvarchar" MaxLength="90" Nullable="false" />
+    <Property Name="Nom_a" Type="nvarchar" MaxLength="90" />
+    <Property Name="Tel_a" Type="nvarchar" MaxLength="90" />
+  </EntityType>
+  <EntityType Name="Categorie">
+    <Key>
+      <PropertyRef Name="ID_categ" />
+    </Key>
+    <Property Name="ID_categ" Type="int" Nullable="false" />
+    <Property Name="nom_categ" Type="nvarchar" MaxLength="90" />
+  </EntityType>
+  <EntityType Name="Imobilier">
+    <Key>
+      <PropertyRef Name="Titre_im" />
+    </Key>
+    <Property Name="Titre_im" Type="nvarchar" MaxLength="90" Nullable="false" />
+    <Property Name="Categ_im" Type="int" />
+    <Property Name="Ville_im" Type="nvarchar" MaxLength="90" />
+    <Property Name="Adresse_im" Type="nvarchar" MaxLength="90" />
+    <Property Name="Description" Type="nvarchar" MaxLength="90" />
+    <Property Name="Locatairee" Type="nvarchar" MaxLength="90" />
+    <Property Name="Etat" Type="nvarchar" MaxLength="90" />
+    <Property Name="Prix" Type="float" />
+    <Property Name="Date_Cre" Type="date" />
+    <Property Name="Date_edit" Type="date" />
+    <Property Name="Date_Class" Type="date" />
+  </EntityType>
+  <EntityType Name="Locataire">
+    <Key>
+      <PropertyRef Name="Email_l" />
+    </Key>
+    <Property Name="Email_l" Type="nvarchar" MaxLength="90" Nullable="false" />
+    <Property Name="Nom_l" Type="nvarchar" MaxLength="90" />
+    <Property Name="Tel_l" Type="nvarchar" MaxLength="90" />
+    <Property Name="Etat_l" Type="nvarchar" MaxLength="90" />
+  </EntityType>
+  <EntityType Name="Photo">
+    <Key>
+      <PropertyRef Name="ID_im" />
+    </Key>
+    <Property Name="ID_im" Type="int" Nullable="false" />
+    <Property Name="Titre_im" Type="nvarchar" MaxLength="90" />
+    <Property Name="Photos" Type="image" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="Email" />
+    </Key>
+    <Property Name="Email" Type="nvarchar" MaxLength="90" Nullable="false" />
+    <Property Name="Password" Type="nvarchar" MaxLength="90" />
+    <Property Name="Etat" Type="nvarchar" MaxLength="90" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Imobilier_Categorie">
+    <End Role="Categorie" Type="Self.Categorie" Multiplicity="0..1" />
+    <End Role="Imobilier" Type="Self.Imobilier" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categorie">
+        <PropertyRef Name="ID_categ" />
+      </Principal>
+      <Dependent Role="Imobilier">
+        <PropertyRef Name="Categ_im" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Imobilier_Locataire">
+    <End Role="Locataire" Type="Self.Locataire" Multiplicity="0..1" />
+    <End Role="Imobilier" Type="Self.Imobilier" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Locataire">
+        <PropertyRef Name="Email_l" />
+      </Principal>
+      <Dependent Role="Imobilier">
+        <PropertyRef Name="Locatairee" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Photo_Imobilier">
+    <End Role="Imobilier" Type="Self.Imobilier" Multiplicity="0..1" />
+    <End Role="Photo" Type="Self.Photo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Imobilier">
+        <PropertyRef Name="Titre_im" />
+      </Principal>
+      <Dependent Role="Photo">
+        <PropertyRef Name="Titre_im" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_User_Admin">
+    <End Role="Admin" Type="Self.Admin" Multiplicity="1" />
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Admin">
+        <PropertyRef Name="Email_a" />
+      </Principal>
+      <Dependent Role="User">
+        <PropertyRef Name="Email" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_User_Locataire">
+    <End Role="Locataire" Type="Self.Locataire" Multiplicity="1" />
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Locataire">
+        <PropertyRef Name="Email_l" />
+      </Principal>
+      <Dependent Role="User">
+        <PropertyRef Name="Email" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+  <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <EntityContainer Name="Projet_De_ClasseModelStoreContainer">
+    <EntitySet Name="Admin" EntityType="Self.Admin" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Categorie" EntityType="Self.Categorie" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Imobilier" EntityType="Self.Imobilier" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Locataire" EntityType="Self.Locataire" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Photo" EntityType="Self.Photo" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Imobilier_Categorie" Association="Self.FK_Imobilier_Categorie">
+      <End Role="Categorie" EntitySet="Categorie" />
+      <End Role="Imobilier" EntitySet="Imobilier" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Imobilier_Locataire" Association="Self.FK_Imobilier_Locataire">
+      <End Role="Locataire" EntitySet="Locataire" />
+      <End Role="Imobilier" EntitySet="Imobilier" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Photo_Imobilier" Association="Self.FK_Photo_Imobilier">
+      <End Role="Imobilier" EntitySet="Imobilier" />
+      <End Role="Photo" EntitySet="Photo" />
+    </AssociationSet>
+    <AssociationSet Name="FK_User_Admin" Association="Self.FK_User_Admin">
+      <End Role="Admin" EntitySet="Admin" />
+      <End Role="User" EntitySet="User" />
+    </AssociationSet>
+    <AssociationSet Name="FK_User_Locataire" Association="Self.FK_User_Locataire">
+      <End Role="Locataire" EntitySet="Locataire" />
+      <End Role="User" EntitySet="User" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

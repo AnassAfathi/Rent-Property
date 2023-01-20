@@ -1,0 +1,224 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Projet_classeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Admine">
+    <Key>
+      <PropertyRef Name="Email_a" />
+    </Key>
+    <Property Name="Email_a" Type="String" MaxLength="90" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Nom_a" Type="String" MaxLength="90" FixedLength="false" Unicode="true" />
+    <Property Name="Tel_a" Type="String" MaxLength="90" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Usere" Relationship="Projet_classeModel.FK_Admine_Usere" FromRole="Admine" ToRole="Usere" />
+  </EntityType>
+  <EntityType Name="Categorie">
+    <Key>
+      <PropertyRef Name="ID_cat" />
+    </Key>
+    <Property Name="ID_cat" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Nom_cat" Type="String" MaxLength="90" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Imobiliers" Relationship="Projet_classeModel.FK_Imobilier_Categorie" FromRole="Categorie" ToRole="Imobilier" />
+  </EntityType>
+  <EntityType Name="Imobilier">
+    <Key>
+      <PropertyRef Name="Titre_im" />
+    </Key>
+    <Property Name="Titre_im" Type="String" MaxLength="90" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Categ_im" Type="Int32" />
+    <Property Name="Ville_im" Type="String" MaxLength="90" FixedLength="false" Unicode="true" />
+    <Property Name="Adresse_im" Type="String" MaxLength="90" FixedLength="false" Unicode="true" />
+    <Property Name="Descri_im" Type="String" MaxLength="90" FixedLength="false" Unicode="true" />
+    <Property Name="Locatairee" Type="String" MaxLength="90" FixedLength="false" Unicode="true" />
+    <Property Name="Etat" Type="String" MaxLength="90" FixedLength="false" Unicode="true" />
+    <Property Name="Prix" Type="Double" />
+    <Property Name="Date_cre" Type="DateTime" Precision="0" />
+    <Property Name="Date_edit" Type="DateTime" Precision="0" />
+    <Property Name="Date_class" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="Categorie" Relationship="Projet_classeModel.FK_Imobilier_Categorie" FromRole="Imobilier" ToRole="Categorie" />
+    <NavigationProperty Name="Locataire" Relationship="Projet_classeModel.FK_Imobilier_Locataire" FromRole="Imobilier" ToRole="Locataire" />
+    <NavigationProperty Name="photoos" Relationship="Projet_classeModel.FK_photoo_Imobilier" FromRole="Imobilier" ToRole="photoo" />
+  </EntityType>
+  <EntityType Name="Locataire">
+    <Key>
+      <PropertyRef Name="Email_l" />
+    </Key>
+    <Property Name="Email_l" Type="String" MaxLength="90" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Nom_l" Type="String" MaxLength="90" FixedLength="false" Unicode="true" />
+    <Property Name="Tel_l" Type="String" MaxLength="90" FixedLength="false" Unicode="true" />
+    <Property Name="Etat_l" Type="String" MaxLength="90" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Imobiliers" Relationship="Projet_classeModel.FK_Imobilier_Locataire" FromRole="Locataire" ToRole="Imobilier" />
+    <NavigationProperty Name="Usere" Relationship="Projet_classeModel.FK_Locataire_Usere" FromRole="Locataire" ToRole="Usere" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Usere">
+    <Key>
+      <PropertyRef Name="Email" />
+    </Key>
+    <Property Name="Email" Type="String" MaxLength="90" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Psw" Type="String" MaxLength="90" FixedLength="false" Unicode="true" />
+    <Property Name="Etat" Type="String" MaxLength="90" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Admine" Relationship="Projet_classeModel.FK_Admine_Usere" FromRole="Usere" ToRole="Admine" />
+    <NavigationProperty Name="Locataire" Relationship="Projet_classeModel.FK_Locataire_Usere" FromRole="Usere" ToRole="Locataire" />
+  </EntityType>
+  <EntityType Name="ville">
+    <Key>
+      <PropertyRef Name="ID_ville" />
+    </Key>
+    <Property Name="ID_ville" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nom_ville" Type="String" MaxLength="90" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityContainer Name="Projet_classeEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Admines" EntityType="Self.Admine" />
+    <EntitySet Name="Categories" EntityType="Self.Categorie" />
+    <EntitySet Name="Imobiliers" EntityType="Self.Imobilier" />
+    <EntitySet Name="Locataires" EntityType="Self.Locataire" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="Useres" EntityType="Self.Usere" />
+    <EntitySet Name="villes" EntityType="Self.ville" />
+    <FunctionImport Name="sp_alterdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_creatediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_dropdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(Projet_classeModel.sp_helpdiagramdefinition_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(Projet_classeModel.sp_helpdiagrams_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_renamediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="new_diagramname" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_upgraddiagrams" />
+    <AssociationSet Name="FK_Admine_Usere" Association="Projet_classeModel.FK_Admine_Usere">
+      <End Role="Usere" EntitySet="Useres" />
+      <End Role="Admine" EntitySet="Admines" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Imobilier_Categorie" Association="Projet_classeModel.FK_Imobilier_Categorie">
+      <End Role="Categorie" EntitySet="Categories" />
+      <End Role="Imobilier" EntitySet="Imobiliers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Imobilier_Locataire" Association="Projet_classeModel.FK_Imobilier_Locataire">
+      <End Role="Locataire" EntitySet="Locataires" />
+      <End Role="Imobilier" EntitySet="Imobiliers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Locataire_Usere" Association="Projet_classeModel.FK_Locataire_Usere">
+      <End Role="Usere" EntitySet="Useres" />
+      <End Role="Locataire" EntitySet="Locataires" />
+    </AssociationSet>
+    <EntitySet Name="Table1" EntityType="Projet_classeModel.Table1" />
+    <EntitySet Name="photoos" EntityType="Projet_classeModel.photoo" />
+    <AssociationSet Name="FK_photoo_Imobilier" Association="Projet_classeModel.FK_photoo_Imobilier">
+      <End Role="Imobilier" EntitySet="Imobiliers" />
+      <End Role="photoo" EntitySet="photoos" />
+    </AssociationSet>
+  </EntityContainer>
+  <ComplexType Name="sp_helpdiagramdefinition_Result">
+    <Property Type="Int32" Name="version" Nullable="true" />
+    <Property Type="Binary" Name="definition" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagrams_Result">
+    <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+    <Property Type="Int32" Name="OwnerID" Nullable="false" />
+  </ComplexType>
+  <Association Name="FK_Admine_Usere">
+    <End Type="Projet_classeModel.Usere" Role="Usere" Multiplicity="1" />
+    <End Type="Projet_classeModel.Admine" Role="Admine" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Usere">
+        <PropertyRef Name="Email" />
+      </Principal>
+      <Dependent Role="Admine">
+        <PropertyRef Name="Email_a" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Imobilier_Categorie">
+    <End Type="Projet_classeModel.Categorie" Role="Categorie" Multiplicity="0..1" />
+    <End Type="Projet_classeModel.Imobilier" Role="Imobilier" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categorie">
+        <PropertyRef Name="ID_cat" />
+      </Principal>
+      <Dependent Role="Imobilier">
+        <PropertyRef Name="Categ_im" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Imobilier_Locataire">
+    <End Type="Projet_classeModel.Locataire" Role="Locataire" Multiplicity="0..1" />
+    <End Type="Projet_classeModel.Imobilier" Role="Imobilier" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Locataire">
+        <PropertyRef Name="Email_l" />
+      </Principal>
+      <Dependent Role="Imobilier">
+        <PropertyRef Name="Locatairee" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Locataire_Usere">
+    <End Type="Projet_classeModel.Usere" Role="Usere" Multiplicity="1" />
+    <End Type="Projet_classeModel.Locataire" Role="Locataire" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Usere">
+        <PropertyRef Name="Email" />
+      </Principal>
+      <Dependent Role="Locataire">
+        <PropertyRef Name="Email_l" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Table1">
+    <Key>
+      <PropertyRef Name="nomcat" />
+    </Key>
+    <Property Name="nomcat" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="photoo">
+    <Key>
+      <PropertyRef Name="ID_ph" />
+    </Key>
+    <Property Name="ID_ph" Type="Int32" Nullable="false" />
+    <Property Name="Titre_im" Type="String" MaxLength="90" FixedLength="false" Unicode="true" />
+    <Property Name="Photos" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Imobilier" Relationship="Projet_classeModel.FK_photoo_Imobilier" FromRole="photoo" ToRole="Imobilier" />
+  </EntityType>
+  <Association Name="FK_photoo_Imobilier">
+    <End Type="Projet_classeModel.Imobilier" Role="Imobilier" Multiplicity="0..1" />
+    <End Type="Projet_classeModel.photoo" Role="photoo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Imobilier">
+        <PropertyRef Name="Titre_im" />
+      </Principal>
+      <Dependent Role="photoo">
+        <PropertyRef Name="Titre_im" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
